@@ -38,10 +38,15 @@ class NeuralNetwork():
             output_from_layer_1, output_from_layer_2, output_from_layer_3 = self.think(training_set_inputs)
            
 
+            # Back propogate to adjust them weights!
+            # Calculate the error for layer 3 (The difference between the desired output
+            # and the predicted output)
             layer3_error = training_set_outputs - output_from_layer_3
             layer3_delta = layer3_error * self.__sigmoid_derivative(output_from_layer_3)
-            # Calculate the error for layer 2 (The difference between the desired output
-            # and the predicted output).
+            #print(layer3_error)
+            
+            # Calculate the error for layer 2 (By looking at the weights in layer 2,
+            # we can determine by how much layer 2 contributed to the error in layer 3).
             layer2_error = training_set_outputs - output_from_layer_2
             layer2_delta = layer2_error * self.__sigmoid_derivative(output_from_layer_2)
 
@@ -81,6 +86,7 @@ if __name__ == "__main__":
     #Seed the random number generator
     random.seed(1)
 
+    # THE NNET
     # Create layer 1 (3 neurons, each with 3 inputs)
     layer1 = NeuronLayer(3, 3)
     # Create layer 2 (3 single neuron with 3 inputs)
@@ -99,7 +105,7 @@ if __name__ == "__main__":
 
     # Train the neural network using the training set.
     # Do it 60,000 times and make small adjustments each time.
-    neural_network.train(training_set_inputs, training_set_outputs, 10000)
+    neural_network.train(training_set_inputs, training_set_outputs, 20000)
 
     print "Stage 2) New synaptic weights after training: "
     neural_network.print_weights()
@@ -108,4 +114,6 @@ if __name__ == "__main__":
     print "Stage 3) Considering a new situation [1, 1, 0] -> ?: "
 
     output = neural_network.think(array([1, 1, 0]))
+    # output has outputs to all layers, show the output layer (3rd layer)
     print output[2]
+    
